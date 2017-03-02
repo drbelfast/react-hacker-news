@@ -1,12 +1,34 @@
 import React, { Component } from 'react'
 
+import ItemList from './components/ItemList'
+import api, { fetchItem, fetchIdsByType } from './utils/api'
+
 export default class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      ids: []
+    }
+  }
+  componentWillMount() {
+    fetchIdsByType('top')
+      .then((data) => this.setState({ids: data}))
+  }
+
   render() {
     return (
       <div className="app-container">
         <nav>
-          Hacker news built by react
+          <ul>
+            <li>Top</li>
+            <li>New</li>
+            <li>Show</li>
+            <li>Ask</li>
+            <li>Jobs</li>
+          </ul>
         </nav>
+        
+        <ItemList ids={this.state.ids} />
       </div>
     )
   }
