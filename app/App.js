@@ -28,7 +28,8 @@ export default class App extends Component {
           </ul>
         </nav>
         { this.props.children && React.cloneElement(this.props.children, {
-          ids: this.state.ids
+          ids: this.state.ids,
+          ITEMS_PER_PAGE: 20
         })}
       </div>
     )
