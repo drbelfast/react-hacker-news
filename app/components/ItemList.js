@@ -29,7 +29,26 @@ export default class ItemList extends Component {
     if (this.state.data.length === 0) {
       content = <div>Loading ... </div>
     } else {
-      const items = this.state.data.map((d, i) => <li key={i} data-index={i}>{d.title}</li>)
+      console.log(this.state.data)
+      const items = this.state.data.map((d, i) => (
+        <li key={i} data-index={i}>
+          <span className='score'>{d.score}</span>
+          <span className='title'>
+            <a href={d.url} target='_blank' className='title'>{d.title}</a>
+          </span>
+          <br />
+          <span className='meta'>
+            <span className='author'>
+              by <Link to={'/user/' + d.by}>{d.by} </Link>
+            </span>
+            | 
+            <span className='comments'>
+              <Link to={'/item/' + d.id}>  {d.descendants} comments</Link>
+             </span>
+          </span>
+          
+        </li>
+      ))
       content = <ul className='news-list'>{items}</ul>
         
     }

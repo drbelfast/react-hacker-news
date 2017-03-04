@@ -36,6 +36,31 @@ ul.news-list {
         background-color: white;
         line-height: 20px;
         text-align: left;
+        position: relative;
+    }
+
+    .score {
+        color: #f60;
+        font-size: 1.1em;
+        font-weight: 700;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 80px;
+        text-align: center;
+        margin-top: -10px;
+    }
+    .title {
+        text-decoration: none;
+        color: black;
+    }
+
+    .meta {
+        font-size: .85em;
+        color: #999;
+        a {
+            color: #999;
+        }
     }
 }
 .disabled {
