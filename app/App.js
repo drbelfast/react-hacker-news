@@ -27,8 +27,9 @@ export default class App extends Component {
             <li>Jobs</li>
           </ul>
         </nav>
-        
-        <ItemList ids={this.state.ids} />
+        { this.props.children && React.cloneElement(this.props.children, {
+          ids: this.state.ids
+        })}
       </div>
     )
   }
