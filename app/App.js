@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { Link } from 'react-router'
 import ItemList from './components/ItemList'
 import api, { fetchItem, fetchIdsByType } from './utils/api'
 
@@ -18,13 +18,13 @@ export default class App extends Component {
   render() {
     return (
       <div className="app-container">
-        <nav>
+        <nav className='header'>
           <ul>
-            <li>Top</li>
-            <li>New</li>
-            <li>Show</li>
-            <li>Ask</li>
-            <li>Jobs</li>
+            <li><Link to={'/top'}>Top</Link></li>
+            <li><Link to={'/new'}>New</Link></li>
+            <li><Link to={'/show'}>Show</Link></li>
+            <li><Link to={'/ask'}>Ask</Link></li>
+            <li><Link to={'/jobs'}>Jobs</Link></li>
           </ul>
         </nav>
         { this.props.children && React.cloneElement(this.props.children, {

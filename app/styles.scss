@@ -7,7 +7,7 @@ body {
 
 nav {
     position: relative;
-    background: tomato;
+    background: #546E7A;
     color: white;
     padding: 5px;
     ul {
@@ -40,7 +40,7 @@ ul.news-list {
     }
 
     .score {
-        color: #f60;
+        color: #B0BEC5;
         font-size: 1.1em;
         font-weight: 700;
         position: absolute;
@@ -54,15 +54,22 @@ ul.news-list {
         text-decoration: none;
         color: black;
     }
-
-    .meta {
+    .host, .meta {
         font-size: .85em;
         color: #999;
         a {
+            text-decoration: underline;
             color: #999;
         }
     }
+    
 }
 .disabled {
     color: #ccc;
+}
+a {
+    text-decoration: none;
+}
+.header a {
+    color: hsla(0,0%,100%,.8)
 }

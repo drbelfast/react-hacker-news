@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { fetchItems } from '../utils/api'
 import { Link } from 'react-router'
+import { timeAgo, host } from '../utils'
 
 export default class ItemList extends Component {
   constructor(props) {
@@ -35,15 +36,18 @@ export default class ItemList extends Component {
           <span className='score'>{d.score}</span>
           <span className='title'>
             <a href={d.url} target='_blank' className='title'>{d.title}</a>
+            {'  '}
+            <span className='host'>({ host(d.url)})</span>
           </span>
           <br />
           <span className='meta'>
             <span className='author'>
               by <Link to={'/user/' + d.by}>{d.by} </Link>
+              {timeAgo(d.time) + ' ago '} 
             </span>
-            | 
+            {'| '} 
             <span className='comments'>
-              <Link to={'/item/' + d.id}>  {d.descendants} comments</Link>
+              <Link to={'/item/' + d.id}>{ d.descendants} comments</Link>
              </span>
           </span>
           
@@ -56,9 +60,9 @@ export default class ItemList extends Component {
     const prevPage = id - 1
 
     const prevBtn = prevPage <= 0 ? 
-      <Link className='disabled'>prev</Link> : <Link to={'/top/page/' + prevPage}>prev </Link> 
+      <Link className='disabled'>prev</Link> : <Link to={'/top/' + prevPage}>prev </Link> 
     const nextBtn = nextPage > Math.ceil(ids.length / ITEMS_PER_PAGE) ?
-      <Link className='disabled'>next</Link> : <Link to={'/top/page/' + nextPage}>next</Link>
+      <Link className='disabled'>next</Link> : <Link to={'/top/' + nextPage}>next</Link>
 
     return (
       <div>
