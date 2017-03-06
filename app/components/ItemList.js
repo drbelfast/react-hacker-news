@@ -1,29 +1,37 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { fetchItems } from '../utils/api'
 import { Link } from 'react-router'
 import { timeAgo, host } from '../utils'
+import { fetchIdsByCategory } from '../actions'
 
-export default class ItemList extends Component {
+class ItemList extends Component {
+  
+
   constructor(props) {
     super(props)
     this.state = {
-      data: [],
-      foo: null
+      data: []
     }
+  }
+
+  componentWillMount() {
+    const { dispatch } = this.props
+    dispatch(fetchIdsByCategory('top'))
   }
 
   componentWillReceiveProps(nextProps) {
     const id = nextProps.params.id
-    const { ids, ITEMS_PER_PAGE } = nextProps
-    const start = typeof id === 'undefined' ? 0 : (id - 1) * ITEMS_PER_PAGE
-    const end = Math.min(ids.length, start + ITEMS_PER_PAGE)
+    const { ids, itemsPerPage } = nextProps
+    const start = typeof id === 'undefined' ? 0 : (id - 1) * itemsPerPage
+    const end = Math.min(ids.length, start + itemsPerPage)
     fetchItems(ids.slice(start, end))
       .then(data => this.setState({data: data}))
-    
+  
   }
 
   render() {
-    const { ids, ITEMS_PER_PAGE } = this.props
+    const { ids, itemsPerPage } = this.props
     const id = Number (typeof this.props.params.id === 'undefined' ? 1 : this.props.params.id)
 
     let content = null
@@ -37,7 +45,7 @@ export default class ItemList extends Component {
           <span className='title'>
             <a href={d.url} target='_blank' className='title'>{d.title}</a>
             {'  '}
-            <span className='host'>({ host(d.url)})</span>
+            {/*<span className='host'>({ host(d.url)})</span>*/}
           </span>
           <br />
           <span className='meta'>
@@ -61,7 +69,7 @@ export default class ItemList extends Component {
 
     const prevBtn = prevPage <= 0 ? 
       <Link className='disabled'>prev</Link> : <Link to={'/top/' + prevPage}>prev </Link> 
-    const nextBtn = nextPage > Math.ceil(ids.length / ITEMS_PER_PAGE) ?
+    const nextBtn = nextPage > Math.ceil(ids.length / itemsPerPage) ?
       <Link className='disabled'>next</Link> : <Link to={'/top/' + nextPage}>next</Link>
 
     return (
@@ -69,7 +77,7 @@ export default class ItemList extends Component {
         <div className='pagination-bar'>
           { prevBtn }
           {'   '}
-          <span>{typeof id === 'undefined' ? 1 : id } / {Math.ceil(ids.length / ITEMS_PER_PAGE)}</span>
+          <span>{typeof id === 'undefined' ? 1 : id } / {Math.ceil(ids.length / itemsPerPage)}</span>
           {'   '}
           { nextBtn }
         </div>
@@ -78,3 +86,21 @@ export default class ItemList extends Component {
     )
   }
 }
+
+ItemList.propTypes = {
+  ids: PropTypes.array.isRequired
+}
+
+ItemList.contextTypes = {
+  router: PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired
+};
+const mapStateToProps = state => {
+  const { lists, activeType, itemsPerPage} = state
+  return  {
+    ids: lists[activeType],
+    itemsPerPage
+  }
+}
+
+export default connect(mapStateToProps)(ItemList)

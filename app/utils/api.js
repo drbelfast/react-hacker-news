@@ -26,7 +26,7 @@ export function fetchItems (ids) {
     return Promise.all(ids.map(id => fetchItem(id)))
 }
 // https://github.com/HackerNews/API#new-top-and-best-stories
-export function fetchIdsByType (type) {
-    return fetch(`${type}stories`)
+export function fetchIdsByCategory (category) {
+    return fetch(`${category}stories`)
 }
 export default api
