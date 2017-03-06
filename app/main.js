@@ -18,7 +18,10 @@ ReactDOM.render(
       <Route path='/' component={App}>
         <IndexRedirect to='/top' />
         <Route path='top(/:id)' component={createListView('top')} />
-        <Route path='new/(/:id)' component={createListView('new')} />
+        <Route path='new(/:id)' component={createListView('new')} />
+        <Route path='show(/:id)' component={createListView('show')} />
+        <Route path='ask(/:id)' component={createListView('ask')} />
+        <Route path='job(/:id)' component={createListView('job')} />
       </Route>
     </Router>
   </Provider>

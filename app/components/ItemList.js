@@ -6,7 +6,6 @@ import { timeAgo, host } from '../utils'
 import { fetchIdsByCategory } from '../actions'
 
 class ItemList extends Component {
-  
 
   constructor(props) {
     super(props)
@@ -16,8 +15,8 @@ class ItemList extends Component {
   }
 
   componentWillMount() {
-    const { dispatch } = this.props
-    dispatch(fetchIdsByCategory('top'))
+    const { dispatch, category } = this.props
+    dispatch(fetchIdsByCategory(category))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,14 +30,13 @@ class ItemList extends Component {
   }
 
   render() {
-    const { ids, itemsPerPage } = this.props
+    const { ids, itemsPerPage, category } = this.props
     const id = Number (typeof this.props.params.id === 'undefined' ? 1 : this.props.params.id)
 
     let content = null
     if (this.state.data.length === 0) {
       content = <div>Loading ... </div>
     } else {
-      console.log(this.state.data)
       const items = this.state.data.map((d, i) => (
         <li key={i} data-index={i}>
           <span className='score'>{d.score}</span>
@@ -68,9 +66,9 @@ class ItemList extends Component {
     const prevPage = id - 1
 
     const prevBtn = prevPage <= 0 ? 
-      <Link className='disabled'>prev</Link> : <Link to={'/top/' + prevPage}>prev </Link> 
+      <Link className='disabled'>prev</Link> : <Link to={'/' + category +  '/' + prevPage}>prev </Link> 
     const nextBtn = nextPage > Math.ceil(ids.length / itemsPerPage) ?
-      <Link className='disabled'>next</Link> : <Link to={'/top/' + nextPage}>next</Link>
+      <Link className='disabled'>next</Link> : <Link to={'/' + category +  '/' + nextPage}>next</Link>
 
     return (
       <div>
@@ -88,7 +86,11 @@ class ItemList extends Component {
 }
 
 ItemList.propTypes = {
-  ids: PropTypes.array.isRequired
+  ids: PropTypes.array.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
+  activeCategory: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired
+  
 }
 
 ItemList.contextTypes = {
@@ -96,10 +98,11 @@ ItemList.contextTypes = {
   store: PropTypes.object.isRequired
 };
 const mapStateToProps = state => {
-  const { lists, activeType, itemsPerPage} = state
+  const { lists, activeCategory, itemsPerPage} = state
   return  {
-    ids: lists[activeType],
-    itemsPerPage
+    ids: lists[activeCategory],
+    itemsPerPage,
+    activeCategory
   }
 }
 

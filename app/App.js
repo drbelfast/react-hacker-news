@@ -13,7 +13,7 @@ export default class App extends Component {
             <li><Link to={'/new'}>New</Link></li>
             <li><Link to={'/show'}>Show</Link></li>
             <li><Link to={'/ask'}>Ask</Link></li>
-            <li><Link to={'/jobs'}>Jobs</Link></li>
+            <li><Link to={'/job'}>Jobs</Link></li>
           </ul>
         </nav>
         { this.props.children && React.cloneElement(this.props.children)}

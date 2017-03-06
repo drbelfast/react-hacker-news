@@ -1,13 +1,16 @@
 import { combineReducers } from 'redux'
 
-import { IDS_SUCCESS } from '../actions'
+import { CATEGORY_UPDATE, IDS_SUCCESS } from '../actions'
 // a constant showing number of items on each page
 function itemsPerPage() {
   return 20
 }
 
-function activeType(state = 'top', action) {
+function activeCategory(state = 'top', action) {
   switch (action.type) {
+    case CATEGORY_UPDATE:
+      console.log(action.category)
+      return action.category
     default:
       return state
   }
@@ -23,7 +26,6 @@ const initialState = {
 function lists(state = initialState, action){
   switch (action.type) {
     case IDS_SUCCESS:
-      console.log('success')
       return {
         ...state,
        [action.category]: action.data 
@@ -36,6 +38,6 @@ function lists(state = initialState, action){
 
 export default combineReducers({
   itemsPerPage,
-  activeType,
+  activeCategory,
   lists
 })
