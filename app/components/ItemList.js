@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { fetchItems } from '../utils/api'
 import { Link } from 'react-router'
 import { timeAgo, host } from '../utils'
-import { fetchIdsByCategory } from '../actions'
+import { fetchIdsAndItsFirstItems, fetchItems } from '../actions'
 
 class ItemList extends Component {
 
@@ -15,17 +14,32 @@ class ItemList extends Component {
   }
 
   componentWillMount() {
-    const { dispatch, category } = this.props
-    dispatch(fetchIdsByCategory(category))
+    const { dispatch, getState, category, itemsPerPage, ids} = this.props
+    const id = this.props.params.id
+    dispatch(fetchIdsAndItsFirstItems(category))
+      .then(() => {
+        this.setState({
+          data: this.props.activeItems
+        })
+      })
   }
 
   componentWillReceiveProps(nextProps) {
     const id = nextProps.params.id
-    const { ids, itemsPerPage } = nextProps
-    const start = typeof id === 'undefined' ? 0 : (id - 1) * itemsPerPage
-    const end = Math.min(ids.length, start + itemsPerPage)
-    fetchItems(ids.slice(start, end))
-      .then(data => this.setState({data: data}))
+    if (id !== this.props.params.id) {
+      const { dispatch, activeItems, itemsPerPage, ids} = nextProps
+      const start = typeof id === 'undefined' ? 0 : (id - 1) * itemsPerPage
+      const end = Math.min(ids.length, start + itemsPerPage)
+      // fetchItems(ids.slice(start, end))
+      //   .then(data => this.setState({data: data}))
+      dispatch(fetchItems(ids.slice(start, end)))
+        .then(() => {
+          this.setState({
+            data: this.props.activeItems
+          })
+        })
+    }
+    
   
   }
 
@@ -98,11 +112,12 @@ ItemList.contextTypes = {
   store: PropTypes.object.isRequired
 };
 const mapStateToProps = state => {
-  const { lists, activeCategory, itemsPerPage} = state
+  const { lists, activeCategory, itemsPerPage, activeItems} = state
   return  {
     ids: lists[activeCategory],
     itemsPerPage,
-    activeCategory
+    activeCategory,
+    activeItems
   }
 }
 
