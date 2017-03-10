@@ -7,6 +7,7 @@ import { browserHistory, Router, Route, IndexRoute, Link, IndexRedirect } from '
 import App from './App'
 import api, { fetchItem, fetchIdsByType } from './utils/api'
 import { createListView } from './components/createListView'
+import CommentsView from './components/CommentsView'
 import styles from './styles.scss'
 
 
@@ -22,6 +23,7 @@ ReactDOM.render(
         <Route path='show(/:id)' component={createListView('show')} />
         <Route path='ask(/:id)' component={createListView('ask')} />
         <Route path='job(/:id)' component={createListView('job')} />
+        <Route path='item/:id' component={CommentsView} />
       </Route>
     </Router>
   </Provider>
